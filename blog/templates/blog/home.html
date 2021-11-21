@@ -1,0 +1,46 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% for post in posts %}
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <small class="text-muted">{{ post.date|date:"M j, Y"}}</small>
+                        </div>
+                        <h4><a class="article-title" href="{{ post.link }}">{{ post.title }}</a></h4>
+                        <p class="aligncenter"><img width="100%" src="{{ post.image.url }}" class="rounded"></p>
+                        <p class="article-content">{{ post.content | safe }}</p>
+                    </div>
+                </article>
+            {% endfor %}
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-outline mb-4" style="color: #c2160aaf!important;" href="?page=1">First</a>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a class="btn mb-4" style="background-color: #c2160aaf!important; color: #ffffff!important;" href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a class="btn btn-outline mb-4" style="color: #c2160aaf!important;" href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a class="btn btn-outline mb-4" style="color: #c2160aaf!important;" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="content-section">
+                <p class="aligncenter">
+                    <img class="rounded-circle" width="160" height="164" src="https://izakaya-eats.s3.us-west-1.amazonaws.com/profile/49021594772_92dc450f20_o.jpeg">
+                </p>
+                <h5>Sean Lee</h5>
+                <p class='text-muted'>This blog started with my love for coding and good food. It serves as an archive for some of my personal favorite restaurants. Follow for more!
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
